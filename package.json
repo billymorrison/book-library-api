@@ -4,15 +4,24 @@
   "description": "A simple CRUD api for a book library",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests/**/*.js --exit --recursive --timeout 60000 --file ./tests/test-setup.js",
+    "start": "nodemon dotenv/config index.js",
+    "prestart": "node scripts/create-database.js",
+    "pretest": "node scripts/create-database.js test",
+    "posttest": "node scripts/drop-database.js"
   },
-  "author": "",
+  "author": "Billy Morrison",
   "license": "ISC",
   "devDependencies": {
     "chai": "^4.2.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
     "mocha": "^8.2.0",
     "mysql2": "^2.2.5",
     "sequelize": "^6.3.5",
     "supertest": "^5.0.0"
+  },
+  "dependencies": {
+    "nodemon": "^2.0.6"
   }
 }
