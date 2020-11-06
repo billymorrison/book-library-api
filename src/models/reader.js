@@ -23,7 +23,7 @@ module.exports = (connection, DataTypes) => {
             msg: 'password field must be at least 8 characters long'
           }
         }
-      }
+      },
     };
   
     const ReaderModel = connection.define('Reader', schema);

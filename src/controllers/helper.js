@@ -2,7 +2,10 @@ const createItem = async (itemType, itemObject, errorMessage) => {
     let response = {}
     try {
         const createdItem = await itemType.create(itemObject)
-        response.item = createdItem
+        const itemId = createdItem.id
+        response.item =  await itemType.findByPk(itemId, {
+            attributes: { exclude: ['password'] }
+        })
         response.success = true
     } catch (err) {
         const errorObject = sendError(errorMessage, err)
@@ -24,13 +27,17 @@ const sendError = (errorMessage, errorObject) => {
 }
 
 const listAll = (item) => {
-    return item.findAll();
+    return item.findAll({
+        attributes: { exclude: ['password'] }
+    });
 }
 
 const findItemWithId = async (item, id, errorMessage) => {
     let response = {}
     try {
-        const record = await item.findByPk(id)
+        const record = await item.findByPk(id, {
+            attributes: { exclude: ['password'] }
+        })
         if(record) {
             response.item = record
             response.success = true
@@ -51,7 +58,9 @@ const updateItemWithId = async (item, id, updateBody, errorMessage) => {
     try {
         const updatedStatus =  await item.update(updateBody, { where: {id} })
         if(updatedStatus[0]) {
-            response.item = await item.findByPk(id)
+            response.item = await item.findByPk(id, {
+                attributes: { exclude: ['password'] }
+            })
             response.success = true
         } else {
             response.error = errorMessage

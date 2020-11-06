@@ -6,6 +6,7 @@ exports.create = async (req, res) => {
 
     const response = await helper.createItem(Reader, req.body, errorMessage)
     if(response.success) {
+        console.log(response.item.password)
         res.status(201).json(response.item)
     } else {
         res.status(400).json({ error: response.error })
