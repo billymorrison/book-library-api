@@ -8,7 +8,6 @@ module.exports = (connection, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false
       },
-      genre: DataTypes.STRING,
       ISBN: DataTypes.STRING
     };
   

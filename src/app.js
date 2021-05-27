@@ -1,6 +1,8 @@
 const express = require('express');
 const readerRouter = require('./routes/reader')
 const bookRouter = require('./routes/book')
+const genreRouter = require('./routes/genre')
+const authorRouter = require('./routes/author')
 
 const app = express();
 
@@ -12,10 +14,7 @@ app.get('/', (req, res) => {
 
 app.use('/readers', readerRouter);
 app.use('/books', bookRouter);
-// app.post('/readers', readerControllers.create);
-// app.get('/readers', readerControllers.list);
-// app.get('/readers/:id', readerControllers.find);
-// app.patch('/readers/:id', readerControllers.update);
-// app.delete('/readers/:id', readerControllers.deleteReader);
+app.use('/genres', genreRouter);
+app.use('/authors', authorRouter)
 
 module.exports = app;

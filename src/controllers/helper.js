@@ -1,3 +1,5 @@
+const { response } = require("express");
+
 const createItem = async (itemType, itemObject, errorMessage) => {
     let response = {}
     try {
@@ -16,7 +18,7 @@ const createItem = async (itemType, itemObject, errorMessage) => {
 };
 
 const sendError = (errorMessage, errorObject) => {
-    const { type } = errorObject.errors[0]
+    const { type }  = errorObject?.errors[0]
     let response = {}
     if(type === 'notNull Violation') {
         response.error = errorMessage
@@ -28,7 +30,9 @@ const sendError = (errorMessage, errorObject) => {
 
 const listAll = (item) => {
     return item.findAll({
-        attributes: { exclude: ['password'] }
+        attributes: { 
+            exclude: ['password'],
+        },
     });
 }
 
@@ -36,7 +40,7 @@ const findItemWithId = async (item, id, errorMessage) => {
     let response = {}
     try {
         const record = await item.findByPk(id, {
-            attributes: { exclude: ['password'] }
+            attributes: { exclude: ['password'] },
         })
         if(record) {
             response.item = record
@@ -92,6 +96,23 @@ const deleteItemWithId = async (item, id, errorMessage) => {
     return response
 }
 
+const findDuplicateName = async (item, dupeValue, errorMessage) => {
+    console.log(dupeValue)
+    let response = {}
+    try {
+        const dupe = await item.findAll({ where: { name: dupeValue } })
+        if (dupe[0]) {
+            response.error = errorMessage
+            response.success = false
+        } else {
+            response.success = true
+        }
+    } catch (err) {
+        response.success = true
+    }
+    return response
+}
+
 
 
 module.exports = {
@@ -100,5 +121,6 @@ module.exports = {
     listAll,
     findItemWithId,
     updateItemWithId,
-    deleteItemWithId
+    deleteItemWithId,
+    findDuplicateName
 }
